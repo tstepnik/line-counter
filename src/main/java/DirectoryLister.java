@@ -20,6 +20,7 @@ public class DirectoryLister {
 
     public void showDirectories(File file) throws IOException {
         int lines = 0;
+
         File[] files = file.listFiles();
 
         if (files != null) {
@@ -34,7 +35,7 @@ public class DirectoryLister {
                         sc.nextLine();
                         lines++;
                     }
-                    StringBuilder builder = getAddress(f.getAbsolutePath());
+                    String builder = getAddress(f.getAbsolutePath(), file.getAbsolutePath());
                     sum += lines;
                     System.out.println(builder + "-->" + lines);
                     lines = 0;
@@ -45,21 +46,8 @@ public class DirectoryLister {
         }
     }
 
-    private StringBuilder getAddress(String fullAddress) {
-        String[] addresses = fullAddress.split("\\\\");
-        int index = 0;
-        int wantedIndex = 0;
-        for (String s : addresses) {
-            if (s.equals("filelinecounter")) {
-                wantedIndex = index;
-            }
-            index++;
-        }
-        StringBuilder builder = new StringBuilder();
-        for (int i = wantedIndex + 1; i < addresses.length; i++) {
-            builder.append("\\").append(addresses[i]);
-        }
-        return builder;
+    private String getAddress(String fullAddress, String partWantededDelete) {
+        return fullAddress.replace(partWantededDelete, "");
     }
 
     public void printSum() {
